@@ -1,23 +1,34 @@
+import bodyParser from "body-parser";
+import cors from "cors";
 import express from "express";
-import mongoose from 'mongoose';
-import cors from 'cors'
+import mongoose from "mongoose";
+import Transaction from "./models/Tranasaction.js";
 
-const PORT = 4000
+const PORT = 4000;
 const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 
-app.use(cors);
-//connection with mongo
 await mongoose.connect(
     "mongodb+srv://indranil:Adrit2021@mern.mw3rcn6.mongodb.net/?retryWrites=true&w=majority"
-)
-console.log("Connection with mongo is succesfully done")
-
-
+);
+console.log("MongoDB connection is successful");
 
 app.get("/", (req, res) => {
     res.send("Hello World");
-
 });
+
+app.post("/transaction", async (req, res) => {
+    const { amount, description, date } = req.body;
+    const transaction = new Transaction({
+        amount,
+        description,
+        date,
+    });
+    await transaction.save();
+    res.json({ message: "Success" });
+});
+
 app.listen(PORT, () => {
-    console.log('Server is running at http://localhost:4000');
+    console.log("Server is running at http://localhost:4000");
 });
