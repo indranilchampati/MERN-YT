@@ -1,55 +1,88 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+
 function App() {
-  const [form, setform] = useState({
+  const [form, setForm] = useState({
     amount: 0,
-    description: '',
-    date: " ",
+    description: "",
+    date: "",
   });
 
-  function handleInput(e) {
-    console.log();
-    setform({ ...form, [e.target.name]: e.target.value })
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    fetchTransctions();
+  }, []);
+
+  async function fetchTransctions() {
+    const res = await fetch("http://localhost:4000/transaction");
+    const { data } = await res.json();
+    setTransactions(data);
   }
-  //connection with BE starts
+
+  function handleInput(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch("http://localhost:4000/transaction",
-      {
-        method: "POST",
-        body: JSON.stringify(form),
-        headers: {
-          "content-type": "application/json",
-        }
-      });
-
-    //backend connection till here
-    const data = await res.json();
-    console.log(data);
+    const res = await fetch("http://localhost:4000/transaction", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (res.ok) {
+      fetchTransctions();
+    }
   }
+
   return (
-    <div >
+    <div>
       <form onSubmit={handleSubmit}>
         <input
-          type='number'
-          name='amount'
+          type="number"
+          name="amount"
           value={form.amount}
           onChange={handleInput}
-          placeholder="Enter the amount" />
+          placeholder="Enter transaction amount"
+        />
         <input
           type="text"
-          name='description'
+          name="description"
           value={form.description}
           onChange={handleInput}
-          placeholder="Enter the Details" />
+          placeholder="Enter transaction details"
+        />
         <input
           type="date"
-          name='date'
+          name="date"
           value={form.date}
-          onChange={handleInput} />
-
-        <button type="submit"> Submit</button>
-
+          onChange={handleInput}
+        />
+        <button type="submit">Submit</button>
       </form>
+
+      <br />
+
+      <section>
+        <table>
+          <thead>
+            <td>Amount</td>
+            <td>Description</td>
+            <td>Date</td>
+          </thead>
+          <tbody>
+            {transactions.map((trx) => (
+              <tr key={trx._id}>
+                <td>{trx.amount}</td>
+                <td>{trx.description}</td>
+                <td>{trx.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </div>
   );
 }

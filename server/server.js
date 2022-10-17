@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
-import Transaction from "./models/Tranasaction.js";
+import Transaction from "./models/Transaction.js";
 
 const PORT = 4000;
 const app = express();
@@ -16,6 +16,11 @@ console.log("MongoDB connection is successful");
 
 app.get("/", (req, res) => {
     res.send("Hello World");
+});
+
+app.get("/transaction", async (req, res) => {
+    const transaction = await Transaction.find({}).sort({ createdAt: -1 });
+    res.json({ data: transaction });
 });
 
 app.post("/transaction", async (req, res) => {
