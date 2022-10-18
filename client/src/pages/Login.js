@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
@@ -12,7 +11,7 @@ import Cookie from "js-cookie";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { getUser } from "../store/auth.js";
+import { setUser } from "../store/auth.js";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -37,14 +36,13 @@ export default function Login() {
 
         if (res.ok) {
             Cookie.set("token", token);
-            dispatch(getUser(user));
+            dispatch(setUser(user));
             navigate("/");
         }
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Container>
             <Box
                 sx={{
                     marginTop: 8,
