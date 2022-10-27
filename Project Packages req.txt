@@ -1,0 +1,37 @@
+FE  client
+cd client/
+npx create-react-app .
+$ npm run start
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/icons-material
+npm install @mui/x-date-pickers
+npm install dayjs
+npm i react-router-dom
+npm i js-cookie
+npm install react-redux
+npm install redux
+npm install @reduxjs/toolkit
+npm i --save @devexpress/dx-react-grid-material-ui
+npm i @devexpress/dx-chart-core
+npm i @devexpress/dx-react-chart
+npm i --save @devexpress/dx-react-chart-material-ui
+
+
+
+
+
+
+
+
+BE sever
+npm init -y
+npm install express 
+npm i mongoose
+npm i nodemon
+npm install body-parser
+npm install bcrypt
+npm i jsonwebtoken
+// in authapi jwt token
+npm install passport-jwt
+npm install passport
+npm install -g heroku
